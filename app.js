@@ -17,14 +17,18 @@ app.get('/', (req, res) => {
 
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
+  const keyword_sm = keyword.toLowerCase()
   const restaurants = restaurantList.results.filter(restaurant => {
-    return restaurant.name.toLowerCase().includes(keyword.toLowerCase()) || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
+    return restaurant.name.toLowerCase().includes(keyword_sm) ||
+      restaurant.category.toLowerCase().includes(keyword_sm)
   })
   res.render('index', { restaurants: restaurants, keyword: keyword })
 })
 
 app.get('/restaurants/:restaurants_id', (req, res) => {
-  const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.restaurants_id)
+  const restaurant = restaurantList.results.find(restaurant => {
+    return restaurant.id.toString() === req.params.restaurants_id
+  })
   res.render('show', { restaurant: restaurant })
 })
 
